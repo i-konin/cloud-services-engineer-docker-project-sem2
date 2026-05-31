@@ -1,10 +1,6 @@
-# secrets:
-#   api_key_secret:
-#     file: ./secrets/api_key.txt
-# закомментировал, что бы в случае тестового запуска на ревью 
-# сборка не упала из-за того, что файл не найден.
-# Пример использования секрета так же закомменчен в блоке backend
-
+secrets:
+  api_key_secret:
+    file: ./secrets/api_key.txt
 
 x-common-backend: &common-backend
   build: ./backend
@@ -74,9 +70,9 @@ services:
         limits:
           cpus: '${FE_CPU:-0.3}'
           memory: ${FE_MEM:-128M}
-    # secrets: [api_key_secret]
-    # environment:
-    #   - API_KEY_FILE=/run/secrets/api_key_secret
+    secrets: [api_key_secret]
+    environment:
+      - API_KEY_FILE=/run/secrets/api_key_secret
 
   frontend-prod:
     <<: *common-frontend

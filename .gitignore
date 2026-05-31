@@ -18,5 +18,5 @@ vendor/
 .DS_Store
 *.tgz
 
-api_key.txt
-/secrets/
+# api_key.txt
+# /secrets/
