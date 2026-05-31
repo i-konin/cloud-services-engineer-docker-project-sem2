@@ -35,3 +35,9 @@ docker-compose --profile prod up -d --build
 docker-compose --profile dev up -d --build
 ```
 В этом режиме `frontend` и `backend` монтируются из текущей директории, что позволяет сразу видеть изменения в коде.
+
+## Оптимизация
+
+
+- [Backend](./backend/readme.md)
+- [Frontend](./frontend/readme.md)
