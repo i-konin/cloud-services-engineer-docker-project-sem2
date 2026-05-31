@@ -1,0 +1,9 @@
+.git
+.github
+node_modules
+dist
+.dockerignore
+Dockerfile
+README.md
+*_test.go
+logs

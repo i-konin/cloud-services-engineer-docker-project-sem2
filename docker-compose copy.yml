@@ -39,6 +39,7 @@ services:
       - app-network
     volumes:
       - backend-logs:/app/logs
+      - ./backend:/app:ro
     cap_drop:
       - ALL
     cap_add:
@@ -78,6 +79,8 @@ services:
       - SETUID
     networks:
       - app-network
+    volumes:
+      - ./frontend:/app:ro
     deploy:
       replicas: ${FRONTEND_REPLICAS:-1}
       resources:

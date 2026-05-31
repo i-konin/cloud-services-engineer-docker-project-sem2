@@ -1,13 +1,16 @@
-FROM golang:1.22-alpine
-
+FROM golang:1.22-alpine AS builder
 WORKDIR /app
+RUN apk add --no-cache git
+COPY go.mod go.sum ./
+RUN go mod download
 COPY . .
-RUN go build -o main ./cmd/api
+RUN CGO_ENABLED=0 GOOS=linux go build -o main ./cmd/api/main.go
 
+FROM alpine:latest
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-RUN mkdir -p /app/logs
-RUN chown -R appuser:appgroup /app/logs
+WORKDIR /app
+RUN mkdir -p /app/logs && chown -R appuser:appgroup /app/logs
+COPY --from=builder /app/main .
 USER appuser
-
 EXPOSE 8081
 CMD ["./main"]
