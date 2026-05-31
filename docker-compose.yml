@@ -22,6 +22,7 @@ x-common-backend: &common-backend
     retries: 3
 
 x-common-frontend: &common-frontend
+  build: ./frontend
   restart: unless-stopped
   networks:
       frontend-network:
@@ -103,7 +104,6 @@ services:
 
   backend-dev:
     <<: *common-backend
-    build: ./backend
     profiles: ["dev"]
     container_name: backend_dev
     volumes:
@@ -112,7 +112,6 @@ services:
 
   frontend-dev:
     <<: *common-frontend
-    build: ./frontend
     profiles: ["dev"]
     container_name: frontend_dev
     volumes:
