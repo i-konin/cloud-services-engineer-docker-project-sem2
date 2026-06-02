@@ -42,9 +42,6 @@ jobs:
         uses: docker/setup-buildx-action@v2
       - name: Build via Docker Compose
         uses: hoverkraft-tech/compose-action@v2.2.0
-        with:
-          compose-file: ./docker-compose.yml
-          compose-flags: "--profile prod"
 
   vulnerability-scan:
     name: Scan ${{ matrix.image }}
@@ -68,14 +65,12 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USER }}
         run: |
-          if [[ "${{ matrix.image }}" == "backend" ]]; then
-            FULL_IMAGE="$DOCKER_USERNAME/docker-project-backend:latest"
-          elif [[ "${{ matrix.image }}" == "frontend" ]]; then
-            FULL_IMAGE="$DOCKER_USERNAME/docker-project-frontend:latest"
-          else
-            FULL_IMAGE="${{ matrix.image }}"
-          fi
-          echo "full_image=$FULL_IMAGE" >> $GITHUB_OUTPUT
+          case "${{ matrix.image }}" in
+            backend)  full="${{ secrets.DOCKER_USER }}/docker-project-backend:latest" ;;
+            frontend) full="${{ secrets.DOCKER_USER }}/docker-project-frontend:latest" ;;
+            *)        full="${{ matrix.image }}" ;;
+          esac
+          echo "full_image=$full" >> $GITHUB_OUTPUT
 
       - name: Scan with Trivy
         uses: aquasecurity/trivy-action@master
